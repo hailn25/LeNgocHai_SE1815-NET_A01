@@ -1,0 +1,81 @@
+﻿@model IEnumerable<LeNgocHaiMVC.Models.NewsArticle>
+
+@{
+    ViewData["Title"] = "Danh sách tin tức";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Danh sách tin tức</h1>
+<form asp-action="Search" method="get" class="d-flex align-items-center gap-2">
+    <div class="input-group">
+        <input type="text" name="query" class="form-control" placeholder="Nhập từ khóa tìm kiếm..." aria-label="Search">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i> Tìm kiếm
+        </button>
+    </div>
+</form>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">➕ Tạo tin mới</a>
+    <a asp-action="Report" class="btn btn-primary">
+        📄 Xuất báo cáo
+    </a>
+</p>
+
+<table class="table table-striped table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.NewsTitle)</th>
+            <th>@Html.DisplayNameFor(model => model.Headline)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+            <th>@Html.DisplayNameFor(model => model.NewsContent)</th>
+            <th>@Html.DisplayNameFor(model => model.NewsSource)</th>
+            <th>@Html.DisplayNameFor(model => model.NewsStatus)</th>
+            <th>@Html.DisplayNameFor(model => model.UpdatedById)</th>
+            <th>@Html.DisplayNameFor(model => model.ModifiedDate)</th>
+            <th>@Html.DisplayNameFor(model => model.Category)</th>
+            <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.NewsTitle)</td>
+                <td>@Html.DisplayFor(modelItem => item.Headline)</td>
+                <td>@item.CreatedDate.ToString()</td>
+                <td>
+                    @if (item.NewsContent.Length > 100)
+                    {
+                            <span>@item.NewsContent.Substring(0, 100)...</span>
+                            <a href="@Url.Action("Details", new { id = item.NewsArticleId })">🔎 Xem thêm</a>
+                    }
+                    else
+                    {
+                            <span>@item.NewsContent</span>
+                    }
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.NewsSource)</td>
+                <td>
+                        <span class="badge bg-@(item.NewsStatus.GetValueOrDefault() ? "success" : "danger")">
+                        @(item.NewsStatus.GetValueOrDefault() ? "🟢 Hoạt động" : "🔴 Không hoạt động")
+    </span>
+
+                </td>
+                <td>@Html.DisplayFor(modelItem => item.UpdatedById)</td>
+                <td>@item.ModifiedDate.ToString()</td>
+                <td>@Html.DisplayFor(modelItem => item.Category.CategoryName)</td>
+                <td>@Html.DisplayFor(modelItem => item.CreatedBy.AccountName)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.NewsArticleId" class="btn btn-primary btn-sm">✏️ Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.NewsArticleId" class="btn btn-info btn-sm">🔍 Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.NewsArticleId" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Bạn có chắc chắn muốn xóa?');">🗑️ Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

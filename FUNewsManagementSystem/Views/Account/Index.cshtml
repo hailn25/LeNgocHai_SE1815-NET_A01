@@ -1,0 +1,52 @@
+﻿@model IEnumerable<LeNgocHaiMVC.Models.SystemAccount>
+
+@{
+    ViewData["Title"] = "Quản lý tài khoản";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h2 class="text-primary">Danh sách tài khoản</h2>
+        <a asp-action="Create" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Thêm tài khoản
+        </a>
+
+    </div>
+
+    <div class="table-responsive mt-3">
+        <table class="table table-hover table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>Họ & Tên</th>
+                    <th>Email</th>
+                    <th>Vai trò</th>
+                    <th>Mật khẩu</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.AccountName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.AccountEmail)</td>
+                            <td>@Html.DisplayFor(modelItem => item.AccountRole)</td>
+                            <td>********</td> @* Ẩn mật khẩu để bảo mật *@
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.AccountId" class="btn btn-warning btn-sm">
+                                    <i class="bi bi-pencil-square"></i> Sửa
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.AccountId" class="btn btn-info btn-sm">
+                                    <i class="bi bi-eye"></i> Xem
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.AccountId" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
